@@ -1,5 +1,6 @@
 package com.rene.library.services;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -18,6 +19,9 @@ public class BookService {
 
 	@Autowired
 	private BookRepository repo;
+	
+	@Autowired 
+	private UserService userService;
 
 	public Book findByUuid(UUID id) {
 
@@ -32,8 +36,13 @@ public class BookService {
 	}
 
 	@Transactional
-	public Book insert(Book obj) {
+	public Book insert(Book obj, UUID userId) {
 		obj.setId(null);
+		obj.setCreatedDate(Instant.now().minusSeconds(10800));
+		obj.setPublishedBy(userService.findByUuid(userId));
+		
+		
+
 
 		return repo.save(obj);
 	}

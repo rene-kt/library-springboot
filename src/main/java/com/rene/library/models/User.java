@@ -2,15 +2,20 @@ package com.rene.library.models;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +41,10 @@ public class User implements Serializable {
 	private String name;
 	private String email;
 	private Instant createdDate;
-	// private Book reservedBook;
-	// private List<Book> publishedBooks;
-
+    @OneToOne(mappedBy = "reservedBy")
+	private Book reservedBook;
+	
+    @JsonIgnore
+    @OneToMany(mappedBy = "publishedBy")
+	private List<Book> publishedBooks;
 }
