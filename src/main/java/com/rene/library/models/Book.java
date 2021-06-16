@@ -39,6 +39,12 @@ public class Book implements Serializable {
 	private String author;
 	private Instant createdDate;
 	private Instant reservedAt;
+	
+	
+	@OneToOne
+	@JoinTable(name = "devolved_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private User devolvedBy;
+	private Instant devolvedAt;
 
 	@ManyToOne
 	@JoinTable(name = "published_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))

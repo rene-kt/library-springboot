@@ -49,4 +49,8 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "publishedBy")
 	private List<Book> publishedBooks;
+    
+    @JsonIgnore
+    @OneToOne(mappedBy="devolvedBy")
+    private Book lastDevolvedBook;
 }

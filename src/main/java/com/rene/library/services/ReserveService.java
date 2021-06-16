@@ -49,6 +49,9 @@ public class ReserveService {
 		book.setReservedAt(null);
 
 		book.setReservedBy(null);
+		book.setDevolvedAt(Instant.now().minusSeconds(10800));
+		book.setDevolvedBy(user);
+
 		user.setReservedBook(null);
 
 		userRepository.save(user);
