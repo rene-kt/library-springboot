@@ -34,13 +34,20 @@ public class ReserveResource {
 	@PutMapping("/reserve")
 	public ResponseEntity<Object> reserveBook(@RequestBody Reserve obj) {
 		User user = userService.findByUuid(obj.getUserID());
+		Book oldBook = bookService.findByUuid(obj.getBookID());
 
 		if (user.getReservedBook() != null) {
 			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
 					"Você já está com um livro reservado, não é possível reservar dois livros ao mesmo tempo",
 					user.getReservedBook());
 
+		} 
+		else if(oldBook.getReservedBy() != null) {
+			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
+					"Você está tentando reservar um livro que já está reservado",
+					oldBook.getReservedBy());
 		}
+
 
 		Book book = service.reserveBook(obj.getUserID(), obj.getBookID());
 		return GenericResponse.handleResponse(HttpStatus.OK, "Livro reservado com sucesso", book);
@@ -62,8 +69,7 @@ public class ReserveResource {
 					"Você está tentando devolver um livro que não está reservado em seu nome",
 					user.getReservedBook());
 
-		}
-
+		} 
 		Book book = service.devolveBook(obj.getUserID(), obj.getBookID());
 		return GenericResponse.handleResponse(HttpStatus.OK, "Livro devolvido com sucesso", book);
 
