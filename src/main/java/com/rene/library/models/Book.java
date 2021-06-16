@@ -2,7 +2,6 @@ package com.rene.library.models;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -15,6 +14,8 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,12 +40,13 @@ public class Book implements Serializable {
 	private String title;
 	private String author;
 	private Instant createdDate;
-	private Date reservedAt;
+	private Instant reservedAt;
 
 	@ManyToOne
 	@JoinTable(name = "published_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private User publishedBy;
 
+	
 	@OneToOne
 	@JoinTable(name = "reserved_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private User reservedBy;

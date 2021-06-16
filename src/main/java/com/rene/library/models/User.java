@@ -41,6 +41,8 @@ public class User implements Serializable {
 	private String name;
 	private String email;
 	private Instant createdDate;
+	
+	@JsonIgnore
     @OneToOne(mappedBy = "reservedBy")
 	private Book reservedBook;
 	
