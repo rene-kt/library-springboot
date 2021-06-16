@@ -41,4 +41,20 @@ public class ReserveService {
 
 		return book;
 	}
+	
+	public Book devolveBook(UUID userId, UUID bookId) {
+		Book book = bookService.findByUuid(bookId);
+		User user = userService.findByUuid(userId);
+
+		book.setReservedAt(null);
+
+		book.setReservedBy(null);
+		user.setReservedBook(null);
+
+		userRepository.save(user);
+		bookRepository.save(book);
+		
+		return book;
+
+	}
 }

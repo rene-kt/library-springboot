@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rene.library.models.Book;
 import com.rene.library.models.Reserve;
 import com.rene.library.models.User;
+import com.rene.library.services.BookService;
 import com.rene.library.services.ReserveService;
 import com.rene.library.services.UserService;
 
@@ -26,6 +27,10 @@ public class ReserveResource {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private BookService bookService;
+	
+	
 	@PutMapping("/reserve")
 	public ResponseEntity<Object> reserveBook(@RequestBody Reserve obj) {
 		User user = userService.findByUuid(obj.getUserID());
@@ -41,5 +46,26 @@ public class ReserveResource {
 		return GenericResponse.handleResponse(HttpStatus.OK, "Livro reservado com sucesso", book);
 
 	}
+	
+	@PutMapping("/devolve")
+	public ResponseEntity<Object> devolveBook(@RequestBody Reserve obj) {
+		User user = userService.findByUuid(obj.getUserID());
+		Book oldBook = bookService.findByUuid(obj.getBookID());
 
+		if (user.getReservedBook() == null) {
+			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
+					"Você não está com nenhum livro reservado no momento",
+					user.getReservedBook());
+
+		} else if( !user.getReservedBook().equals(oldBook)) {
+			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
+					"Você está tentando devolver um livro que não está reservado em seu nome",
+					user.getReservedBook());
+
+		}
+
+		Book book = service.devolveBook(obj.getUserID(), obj.getBookID());
+		return GenericResponse.handleResponse(HttpStatus.OK, "Livro devolvido com sucesso", book);
+
+	}
 }
