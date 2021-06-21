@@ -57,7 +57,6 @@ public class ReserveService {
 		user.setNumberOfBooksReserved(user.getNumberOfBooksReserved() + 1);
 		
 		
-		System.err.println(book.getPublishedBy().getNumberOfReservedBooks());
 		// Adding 1 to the number of published books reserved by user who has published the book
 		book.getPublishedBy().setNumberOfReservedBooks(book.getPublishedBy().getNumberOfReservedBooks() + 1);
 		

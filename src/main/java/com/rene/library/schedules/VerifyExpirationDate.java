@@ -70,7 +70,7 @@ public class VerifyExpirationDate {
 						book.setExpiration_date(null);
 						book.setIsExpired("N");
 
-						logger.log(Level.INFO, "The book: " + book.getTitle() + " has no expiration date");
+						logger.log(Level.INFO, "The book: " + book.getTitle() + " is not reserved");
 					}
 
 				}

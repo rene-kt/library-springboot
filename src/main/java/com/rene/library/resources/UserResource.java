@@ -38,5 +38,12 @@ public class UserResource {
 		return GenericResponse.handleResponse(HttpStatus.CREATED, "Usuário criado com sucesso", obj);
 
 	}
+	
+	@GetMapping("/user")
+	public ResponseEntity<Object> findAll() {
+
+		return GenericResponse.handleResponse(HttpStatus.OK, "Busca realizada com sucesso", service.findAll());
+
+	}
 
 }
