@@ -54,5 +54,11 @@ public class Book implements Serializable {
 	@OneToOne
 	@JoinTable(name = "reserved_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private User reservedBy;
+	
+	
+	private Instant expiration_date;
+	private String isExpired;
+	
+	
 
 }

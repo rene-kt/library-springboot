@@ -30,8 +30,19 @@ public class ReserveService {
 
 		Book book = bookService.findByUuid(bookId);
 		User user = userService.findByUuid(userId);
+		
+		
+		// minus 3 hours
+		Instant instantNow = Instant.now().minusSeconds(10800);
 
-		book.setReservedAt(Instant.now().minusSeconds(10800));
+		
+		book.setReservedAt(instantNow);
+
+		// plus 24 hours
+		// book.setExpiration_date(Instant.now().plusSeconds(86400));
+		book.setExpiration_date(instantNow.plusSeconds(60));
+
+		book.setIsExpired("N");
 
 		book.setReservedBy(user);
 		user.setReservedBook(book);
@@ -41,23 +52,28 @@ public class ReserveService {
 
 		return book;
 	}
-	
+
 	public Book devolveBook(UUID userId, UUID bookId) {
 		Book book = bookService.findByUuid(bookId);
 		User user = userService.findByUuid(userId);
 
 		book.setReservedAt(null);
-
 		book.setReservedBy(null);
-		book.setDevolvedAt(Instant.now().minusSeconds(10800));
-		book.setDevolvedBy(user);
 
+		book.setDevolvedAt(Instant.now().minusSeconds(10800));
+
+		book.setExpiration_date(null);
+		book.setIsExpired("N");
+
+		book.setDevolvedBy(user);
 		user.setReservedBook(null);
 
 		userRepository.save(user);
 		bookRepository.save(book);
-		
+
 		return book;
 
 	}
+
+
 }
