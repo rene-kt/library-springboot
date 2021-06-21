@@ -24,7 +24,7 @@ public class VerifyDueDate {
 	@Autowired
 	private ReserveService reserveService;
 
-	@Scheduled(fixedRate = 15000)
+	@Scheduled(fixedRate = 5000)
 	public void scheduleIfIsItExpired() {
 
 		isExpired();
@@ -48,10 +48,14 @@ public class VerifyDueDate {
 							book.setExpiration_date(null);
 							book.setIsExpired("Y");
 
-							logger.log(Level.INFO, "The book: " + book.getTitle() + " is expired");
+							logger.log(Level.WARNING, "The book: " + book.getTitle() + " is expired");
 
-							logger.log(Level.INFO, "The book: " + book.getTitle() + " is being devolved right now...");
+							logger.log(Level.WARNING, "The book: " + book.getTitle() + " is being devolved right now...");
 							reserveService.devolveBook(book.getReservedBy().getId(), book.getId());
+
+						} else {
+
+							logger.log(Level.INFO, "The book: " + book.getTitle() + " is not expired");
 
 						}
 					} catch (NullPointerException e) {
