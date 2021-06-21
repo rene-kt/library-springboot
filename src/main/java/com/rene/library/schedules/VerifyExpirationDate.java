@@ -10,11 +10,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.rene.library.models.Book;
-import com.rene.library.models.User;
-import com.rene.library.repositories.UserRepository;
 import com.rene.library.services.BookService;
 import com.rene.library.services.ReserveService;
-import com.rene.library.services.UserService;
 
 @Component
 public class VerifyExpirationDate {

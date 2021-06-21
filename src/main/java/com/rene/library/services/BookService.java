@@ -52,9 +52,21 @@ public class BookService {
 
 		return repo.save(newBook);
 	}
+	
+	
 
 	public List<Book> findAll() {
 		return repo.findAll();
+	}
+	
+	@Transactional
+	public Book delete(UUID bookId) {
+
+		Book book = findByUuid(bookId);
+		
+		repo.delete(book);
+		
+		return book;
 	}
 
 }

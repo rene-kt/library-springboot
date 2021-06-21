@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,27 @@ public class BookResource {
 		service.insert(obj, userId);
 		return GenericResponse.handleResponse(HttpStatus.CREATED, "Livro publicado com sucesso", obj);
 
+	}
+
+	@GetMapping("/book")
+	public ResponseEntity<Object> findAll() {
+
+		return GenericResponse.handleResponse(HttpStatus.OK, "Busca realizada com sucesso", service.findAll());
+
+	}
+
+	@DeleteMapping("/book/{bookId}")
+	public ResponseEntity<Object> delete(@PathVariable UUID bookId) {
+
+		Book book = service.findByUuid(bookId);
+
+		if (book.getReservedBy() != null) {
+			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
+					"Você não pode deletar esse livro pois ele está reservado nesse momento", book);
+
+		}
+
+		return GenericResponse.handleResponse(HttpStatus.OK, "Deleção realizada com sucesso", service.delete(bookId));
 	}
 
 }
