@@ -42,6 +42,11 @@ public class User implements Serializable {
 	private String email;
 	private Instant createdDate;
 	
+	private Integer numberOfBooksReserved = 0;
+	
+	private Integer numberOfReservedBooks = 0;
+	
+	
 	@JsonIgnore
     @OneToOne(mappedBy = "reservedBy")
 	private Book reservedBook;
@@ -53,4 +58,7 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToOne(mappedBy="devolvedBy")
     private Book lastDevolvedBook;
+    
+    
+   
 }

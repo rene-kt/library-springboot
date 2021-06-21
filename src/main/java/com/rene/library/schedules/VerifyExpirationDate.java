@@ -10,13 +10,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.rene.library.models.Book;
+import com.rene.library.models.User;
+import com.rene.library.repositories.UserRepository;
 import com.rene.library.services.BookService;
 import com.rene.library.services.ReserveService;
+import com.rene.library.services.UserService;
 
 @Component
-public class VerifyDueDate {
+public class VerifyExpirationDate {
 
-	Logger logger = Logger.getLogger(VerifyDueDate.class.getName());
+	Logger logger = Logger.getLogger(VerifyExpirationDate.class.getName());
 
 	@Autowired
 	private BookService bookService;
@@ -24,7 +27,7 @@ public class VerifyDueDate {
 	@Autowired
 	private ReserveService reserveService;
 
-	@Scheduled(fixedRate = 5000)
+	@Scheduled(fixedRate = 60000)
 	public void scheduleIfIsItExpired() {
 
 		isExpired();
@@ -37,12 +40,14 @@ public class VerifyDueDate {
 
 		logger.log(Level.INFO, "Searching all books...");
 
+		// To each book in books, create a Thread to each of them
 		for (Book book : books) {
 
 			Thread thread = new Thread() {
 				public void run() {
 
 					try {
+						// Verifying if the book is expired
 						if (book.getExpiration_date().isBefore(Instant.now().minusSeconds(10800))) {
 
 							book.setExpiration_date(null);
@@ -50,14 +55,19 @@ public class VerifyDueDate {
 
 							logger.log(Level.WARNING, "The book: " + book.getTitle() + " is expired");
 
-							logger.log(Level.WARNING, "The book: " + book.getTitle() + " is being devolved right now...");
+							logger.log(Level.WARNING,
+									"The book: " + book.getTitle() + " is being devolved right now...");
+
 							reserveService.devolveBook(book.getReservedBy().getId(), book.getId());
 
+							// Its not expired
 						} else {
 
 							logger.log(Level.INFO, "The book: " + book.getTitle() + " is not expired");
 
 						}
+
+						// If has no expiration date
 					} catch (NullPointerException e) {
 
 						book.setExpiration_date(null);

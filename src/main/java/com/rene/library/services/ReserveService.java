@@ -46,6 +46,13 @@ public class ReserveService {
 
 		book.setReservedBy(user);
 		user.setReservedBook(book);
+		
+		
+		// Adding 1 to the number of books reserved of the user who has reserved the book
+		user.setNumberOfBooksReserved(user.getNumberOfBooksReserved() + 1);
+		
+		// Adding 1 to the number of published books reserved by user who has published the book
+		book.getPublishedBy().setNumberOfReservedBooks(book.getPublishedBy().getNumberOfReservedBooks() + 1);
 
 		userRepository.save(user);
 		bookRepository.save(book);
