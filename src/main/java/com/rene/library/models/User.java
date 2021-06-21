@@ -42,8 +42,11 @@ public class User implements Serializable {
 	private String email;
 	private Instant createdDate;
 	
+	
+	// Number of times that this user has reserved one book
 	private Integer numberOfBooksReserved = 0;
 	
+	// Number of times that this user has one book reserved by another user
 	private Integer numberOfReservedBooks = 0;
 	
 	

@@ -39,6 +39,7 @@ public class Book implements Serializable {
 	private String author;
 	private Instant createdDate;
 	private Instant reservedAt;
+	private Integer numberOfReserves = 0;
 	
 	
 	@OneToOne
