@@ -36,10 +36,10 @@ public class ReserveResource {
 		User user = userService.findByUuid(obj.getUserID());
 		Book oldBook = bookService.findByUuid(obj.getBookID());
 
-		if (user.getReservedBook() != null) {
+		if (user.getCurrentReservedBook() != null) {
 			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
 					"Você já está com um livro reservado, não é possível reservar dois livros ao mesmo tempo",
-					user.getReservedBook());
+					user.getCurrentReservedBook());
 
 		} 
 		else if(oldBook.getReservedBy() != null) {
@@ -59,15 +59,15 @@ public class ReserveResource {
 		User user = userService.findByUuid(obj.getUserID());
 		Book oldBook = bookService.findByUuid(obj.getBookID());
 
-		if (user.getReservedBook() == null) {
+		if (user.getCurrentReservedBook() == null) {
 			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
 					"Você não está com nenhum livro reservado no momento",
-					user.getReservedBook());
+					user.getCurrentReservedBook());
 
-		} else if( !user.getReservedBook().equals(oldBook)) {
+		} else if( !user.getCurrentReservedBook().equals(oldBook)) {
 			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
 					"Você está tentando devolver um livro que não está reservado em seu nome",
-					user.getReservedBook());
+					user.getCurrentReservedBook());
 
 		} 
 		Book book = service.devolveBook(obj.getUserID(), obj.getBookID());

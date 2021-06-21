@@ -43,11 +43,12 @@ public class ReserveService {
 		
 		
 		book.setExpiration_date(instantNow.plusSeconds(60));
-
 		book.setIsExpired("N");
-
 		book.setReservedBy(user);
-		user.setReservedBook(book);
+		book.getHasBeenReservedBy().add(user);
+		
+		user.setCurrentReservedBook(book);
+		user.getReservedBooks().add(book);
 		
 		
 		// Adding 1 to the number of reserves
@@ -82,7 +83,7 @@ public class ReserveService {
 		book.setIsExpired("N");
 
 		book.setDevolvedBy(user);
-		user.setReservedBook(null);
+		user.setCurrentReservedBook(null);
 
 		userRepository.save(user);
 		bookRepository.save(book);

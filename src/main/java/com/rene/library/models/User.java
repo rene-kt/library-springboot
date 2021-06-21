@@ -2,12 +2,13 @@ package com.rene.library.models;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -52,11 +53,15 @@ public class User implements Serializable {
 	
 	@JsonIgnore
     @OneToOne(mappedBy = "reservedBy")
-	private Book reservedBook;
+	private Book currentReservedBook;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "hasBeenReservedBy")
+	private Set<Book> reservedBooks;
 	
     @JsonIgnore
     @OneToMany(mappedBy = "publishedBy")
-	private List<Book> publishedBooks;
+	private Set<Book> publishedBooks;
     
     @JsonIgnore
     @OneToOne(mappedBy="devolvedBy")

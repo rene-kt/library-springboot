@@ -2,6 +2,7 @@ package com.rene.library.models;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -9,11 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,6 +60,10 @@ public class Book implements Serializable {
 	@JoinTable(name = "reserved_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private User reservedBy;
 	
+	
+	@ManyToMany
+	@JoinTable(name = "has_been_reserved_by", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private Set<User> hasBeenReservedBy;
 	
 	private Instant expiration_date;
 	private String isExpired;
