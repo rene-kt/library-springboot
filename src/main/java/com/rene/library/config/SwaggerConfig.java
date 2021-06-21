@@ -13,14 +13,26 @@ public class SwaggerConfig {
 
 	@Bean
 	public Docket libraryApi() {
-		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.rene.library")).paths(PathSelectors.regex("/.*")).build()
-				.apiInfo(metaInfo());
+		return new Docket(DocumentationType.SWAGGER_2)
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("com.rene.library"))
+        .paths(PathSelectors.any())
+        .build()
+        .useDefaultResponseMessages(false)
+        .apiInfo(apiInfo());
+		}
+	
+	
+	private ApiInfo apiInfo() {
+	    return new ApiInfoBuilder()
+	    		 .title("Spring Boot REST API")
+	    	        .description("\"Spring Boot REST API for greeting people\"")
+	    	        .version("1.0.0")
+	    	        .license("Apache License Version 2.0")
+	    	        .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
+	    	        .build();
 	}
 
-	private ApiInfo metaInfo() {
-		return new ApiInfoBuilder().title("Library API rest").description("\"Library W/ SPRING BOOT\"").version("1.0.0")
-				.license("Apache License Version 2.0").licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
-				.build();
-	}
+	
+	
 }

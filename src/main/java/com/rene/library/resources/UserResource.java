@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rene.library.models.User;
 import com.rene.library.services.UserService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping
 @CrossOrigin
@@ -24,6 +28,11 @@ public class UserResource {
 	@Autowired
 	private UserService service;
 
+	@ApiOperation(value = "Return a user by UUID")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Return the user of the given UUID"),
+	    @ApiResponse(code = 404, message = "The user was not found"),
+	})
 	@GetMapping("/user/{id}")
 	public ResponseEntity<Object> findById(@PathVariable UUID id) {
 
@@ -31,12 +40,23 @@ public class UserResource {
 
 	}
 	
+	@ApiOperation(value = "Return a userDTO by UUID")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Return the userDTO of the given UUID"),
+	    @ApiResponse(code = 404, message = "The userDTO was not found"),
+	})
 	@GetMapping("/userdto/{id}")
 	public ResponseEntity<Object> findDtoById(@PathVariable UUID id) {
 
 		return GenericResponse.handleResponse(HttpStatus.OK, "Busca realizada com sucesso", service.returnUserDTO(id));
 
 	}
+	
+	@ApiOperation(value = "Create a user")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 201, message = "Create user successfully"),
+
+	})
 
 	@PostMapping("/user")
 	public ResponseEntity<Object> insert(@RequestBody User obj) {
@@ -46,6 +66,11 @@ public class UserResource {
 
 	}
 	
+	@ApiOperation(value = "Find all users")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Return all users"),
+	  
+	})
 	@GetMapping("/user")
 	public ResponseEntity<Object> findAll() {
 

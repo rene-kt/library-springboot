@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rene.library.models.Book;
 import com.rene.library.services.BookService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping
 @CrossOrigin
@@ -24,7 +28,12 @@ public class BookResource {
 
 	@Autowired
 	private BookService service;
-
+	
+	@ApiOperation(value = "Return a book by UUID")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Return the book of the given UUID"),
+	    @ApiResponse(code = 404, message = "The book was not found"),
+	})
 	@GetMapping("/book/{id}")
 	public ResponseEntity<Object> findById(@PathVariable UUID id) {
 
@@ -32,6 +41,11 @@ public class BookResource {
 
 	}
 
+	@ApiOperation(value = "Create a new book")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 201, message = "The book was created"),
+
+	})
 	@PostMapping("/book/{userId}")
 	public ResponseEntity<Object> insert(@RequestBody Book obj, @PathVariable UUID userId) {
 
@@ -40,6 +54,11 @@ public class BookResource {
 
 	}
 
+	@ApiOperation(value = "Return all books")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Return all books"),
+
+	})
 	@GetMapping("/book")
 	public ResponseEntity<Object> findAll() {
 
@@ -47,6 +66,11 @@ public class BookResource {
 
 	}
 
+	@ApiOperation(value = "Delete a book by UUID")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "The book was deleted"),
+	    @ApiResponse(code = 400, message = "You can't delete this book because its reserved by a user right now"),
+	})
 	@DeleteMapping("/book/{bookId}")
 	public ResponseEntity<Object> delete(@PathVariable UUID bookId) {
 

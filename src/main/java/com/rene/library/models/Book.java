@@ -36,7 +36,6 @@ public class Book implements Serializable {
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
 	private UUID id;
-
 	private String title;
 	private String author;
 	private Instant createdDate;
@@ -44,9 +43,11 @@ public class Book implements Serializable {
 	private Integer numberOfReserves = 0;
 	
 	
+	
 	@OneToOne
 	@JoinTable(name = "devolved_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private User devolvedBy;
+	
 	private Instant devolvedAt;
 
 	@ManyToOne

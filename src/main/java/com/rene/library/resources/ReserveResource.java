@@ -16,6 +16,10 @@ import com.rene.library.services.BookService;
 import com.rene.library.services.ReserveService;
 import com.rene.library.services.UserService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping
 @CrossOrigin
@@ -30,6 +34,12 @@ public class ReserveResource {
 	@Autowired
 	private BookService bookService;
 	
+	
+	@ApiOperation(value = "Reserving a book by User UUID and Book UUID")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Reserve the book sucessfully"),
+	    @ApiResponse(code = 400, message = "The reserve failed, there's a conflict in this action, such as: You've a reserved book already or this book is reserved by other user right now"),
+	})
 	
 	@PutMapping("/reserve")
 	public ResponseEntity<Object> reserveBook(@RequestBody Reserve obj) {
@@ -53,6 +63,12 @@ public class ReserveResource {
 		return GenericResponse.handleResponse(HttpStatus.OK, "Livro reservado com sucesso", book);
 
 	}
+	
+	@ApiOperation(value = "Devolving a book by User UUID and Book UUID")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Devolve the book sucessfully"),
+	    @ApiResponse(code = 400, message = "The devolve failed, there's a conflict in this action, such as: You dont have any book reserved or this book is reserved by other user right now"),
+	})
 	
 	@PutMapping("/devolve")
 	public ResponseEntity<Object> devolveBook(@RequestBody Reserve obj) {
