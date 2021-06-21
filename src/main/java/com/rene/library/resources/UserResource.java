@@ -30,6 +30,13 @@ public class UserResource {
 		return GenericResponse.handleResponse(HttpStatus.OK, "Busca realizada com sucesso", service.findByUuid(id));
 
 	}
+	
+	@GetMapping("/userdto/{id}")
+	public ResponseEntity<Object> findDtoById(@PathVariable UUID id) {
+
+		return GenericResponse.handleResponse(HttpStatus.OK, "Busca realizada com sucesso", service.returnUserDTO(id));
+
+	}
 
 	@PostMapping("/user")
 	public ResponseEntity<Object> insert(@RequestBody User obj) {
@@ -45,5 +52,7 @@ public class UserResource {
 		return GenericResponse.handleResponse(HttpStatus.OK, "Busca realizada com sucesso", service.findAll());
 
 	}
+	
+	
 
 }

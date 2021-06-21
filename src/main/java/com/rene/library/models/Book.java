@@ -17,8 +17,6 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,7 +53,6 @@ public class Book implements Serializable {
 	@JoinTable(name = "published_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private User publishedBy;
 
-	
 	@OneToOne
 	@JoinTable(name = "reserved_books", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private User reservedBy;

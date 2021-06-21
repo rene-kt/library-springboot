@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rene.library.models.User;
+import com.rene.library.models.UserDTO;
 import com.rene.library.repositories.UserRepository;
 
 @Service
@@ -35,8 +36,7 @@ public class UserService {
 	@Transactional
 	public User insert(User obj) {
 		obj.setId(null);
-		
-	
+
 		obj.setCreatedDate(Instant.now().minusSeconds(10800));
 
 		return repo.save(obj);
@@ -50,6 +50,26 @@ public class UserService {
 
 	public List<User> findAll() {
 		return repo.findAll();
+	}
+
+	public UserDTO returnUserDTO(UUID userId) {
+
+		User user = findByUuid(userId);
+
+		UserDTO dto = new UserDTO();
+		dto.setId(user.getId());
+		dto.setName(user.getName());
+		dto.setEmail(user.getEmail());
+		dto.setCreatedDate(user.getCreatedDate());
+		dto.setNumberOfBooksReserved(user.getNumberOfBooksReserved());
+		dto.setNumberOfReservedBooks(user.getNumberOfReservedBooks());
+		dto.setCurrentReservedBook(user.getCurrentReservedBook());
+		dto.setReservedBooks(user.getReservedBooks());
+		dto.setPublishedBooks(user.getPublishedBooks());
+		dto.setLastDevolvedBook(user.getLastDevolvedBook());
+
+		return dto;
+
 	}
 
 }
