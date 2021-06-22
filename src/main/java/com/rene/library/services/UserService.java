@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rene.library.models.User;
@@ -20,7 +21,11 @@ public class UserService {
 
 	@Autowired
 	private UserRepository repo;
+	
+	@Autowired
+	private BCryptPasswordEncoder encode;
 
+	 
 	public User findByUuid(UUID id) {
 
 		Optional<User> obj = repo.findOneById(id);
@@ -38,6 +43,9 @@ public class UserService {
 		obj.setId(null);
 
 		obj.setCreatedDate(Instant.now().minusSeconds(10800));
+		
+		obj.setPassword(encode.encode(obj.getPassword()));
+		
 
 		return repo.save(obj);
 	}
@@ -59,7 +67,7 @@ public class UserService {
 		UserDTO dto = new UserDTO();
 		dto.setId(user.getId());
 		dto.setName(user.getName());
-		dto.setEmail(user.getEmail());
+		dto.setUsername(user.getUsername());
 		dto.setCreatedDate(user.getCreatedDate());
 		dto.setNumberOfBooksReserved(user.getNumberOfBooksReserved());
 		dto.setNumberOfReservedBooks(user.getNumberOfReservedBooks());

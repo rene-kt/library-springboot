@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+
 @RestController
 @RequestMapping
 @CrossOrigin
@@ -61,8 +62,17 @@ public class UserResource {
 	@PostMapping("/user")
 	public ResponseEntity<Object> insert(@RequestBody User obj) {
 
-		service.insert(obj);
-		return GenericResponse.handleResponse(HttpStatus.CREATED, "Usuário criado com sucesso", obj);
+		
+		try {		
+			service.insert(obj);
+
+			return GenericResponse.handleResponse(HttpStatus.CREATED, "Usuário criado com sucesso", obj);
+		} catch (Exception e) {
+			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST, "Já existe um usuário com esse mesmo username", null);
+
+			// TODO: handle exception
+		}
+		
 
 	}
 	
