@@ -51,16 +51,21 @@ public class VerifyExpirationDate {
 							book.setIsExpired("Y");
 
 							logger.log(Level.WARNING, "The book: " + book.getTitle() + " is expired");
+							logger.log(Level.INFO, "Published by: " + book.getPublishedBy().getName().toUpperCase());
+							logger.log(Level.INFO, "Reserved by: " + book.getReservedBy().getName().toUpperCase());
 
+							
 							logger.log(Level.WARNING,
-									"The book: " + book.getTitle() + " is being devolved right now...");
+									"The book: " + book.getTitle().toUpperCase() + " is being devolved right now...");
 
 							reserveService.devolveBook(book.getReservedBy().getId(), book.getId());
 
 							// Its not expired
 						} else {
 
-							logger.log(Level.INFO, "The book: " + book.getTitle() + " is not expired");
+							logger.log(Level.INFO, "The book: " + book.getTitle().toUpperCase() + " is not expired");
+							logger.log(Level.INFO, "Published by: " + book.getPublishedBy().getName().toUpperCase());
+							logger.log(Level.INFO, "Reserved by: " + book.getReservedBy().getName().toUpperCase());
 
 						}
 
@@ -70,7 +75,9 @@ public class VerifyExpirationDate {
 						book.setExpiration_date(null);
 						book.setIsExpired("N");
 
-						logger.log(Level.INFO, "The book: " + book.getTitle() + " is not reserved");
+						logger.log(Level.INFO, "The book: " + book.getTitle().toUpperCase() + " is not reserved");
+						logger.log(Level.INFO, "Published by: " + book.getPublishedBy().getName().toUpperCase());
+
 					}
 
 				}
