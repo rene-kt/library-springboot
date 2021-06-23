@@ -71,22 +71,18 @@ public class ReserveResource {
 	})
 	
 	@PutMapping("/devolve")
-	public ResponseEntity<Object> devolveBook(@RequestBody Reserve obj) {
-		User user = userService.findByUuid(obj.getUserID());
-		Book oldBook = bookService.findByUuid(obj.getBookID());
-
+	public ResponseEntity<Object> devolveBook() {
+		User user = userService.returnUserAuthenticated();
+		
 		if (user.getCurrentReservedBook() == null) {
 			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
 					"Você não está com nenhum livro reservado no momento",
 					user.getCurrentReservedBook());
 
-		} else if( !user.getCurrentReservedBook().equals(oldBook)) {
-			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
-					"Você está tentando devolver um livro que não está reservado em seu nome",
-					user.getCurrentReservedBook());
-
 		} 
-		Book book = service.devolveBook(obj.getUserID(), obj.getBookID());
+		
+		
+		Book book = service.devolveBook(user.getId(), user.getCurrentReservedBook().getId());
 		return GenericResponse.handleResponse(HttpStatus.OK, "Livro devolvido com sucesso", book);
 
 	}
