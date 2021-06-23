@@ -9,23 +9,24 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rene.library.models.User;
 import com.rene.library.models.UserDTO;
 import com.rene.library.repositories.UserRepository;
+import com.rene.library.security.UserSS;
 
 @Service
 public class UserService {
 
 	@Autowired
 	private UserRepository repo;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder encode;
 
-	 
 	public User findByUuid(UUID id) {
 
 		Optional<User> obj = repo.findOneById(id);
@@ -43,9 +44,8 @@ public class UserService {
 		obj.setId(null);
 
 		obj.setCreatedDate(Instant.now().minusSeconds(10800));
-		
+
 		obj.setPassword(encode.encode(obj.getPassword()));
-		
 
 		return repo.save(obj);
 	}
@@ -78,6 +78,18 @@ public class UserService {
 
 		return dto;
 
+	}
+
+	public User returnUserAuthenticated() {
+		try {
+
+			UserSS ss = (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			return findByUuid(ss.getId());
+
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }
