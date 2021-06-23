@@ -44,6 +44,13 @@ public class ReserveResource {
 		User user = userService.returnUserAuthenticated();
 		Book book = bookService.findByUuid(bookId);
 
+		if (book.getPublishedBy().equals(user)) {
+			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
+					"Você está tentando reservar o seu próprio livro", book);
+
+		}
+		
+		
 		if (user.getCurrentReservedBook() != null) {
 			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
 					"Você já está com um livro reservado, não é possível reservar dois livros ao mesmo tempo",
@@ -51,11 +58,6 @@ public class ReserveResource {
 
 		}
 
-		if (book.getPublishedBy().equals(user)) {
-			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
-					"Você está tentando reservar o seu próprio livro", book);
-
-		}
 		
 		
 		service.reserveBook(user, book);
