@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rene.library.models.Book;
 import com.rene.library.services.BookService;
+import com.rene.library.services.UserService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,6 +29,9 @@ public class BookResource {
 
 	@Autowired
 	private BookService service;
+	
+	@Autowired
+	private UserService userService;
 	
 	@ApiOperation(value = "Return a book by UUID")
 	@ApiResponses(value = {
@@ -46,10 +50,10 @@ public class BookResource {
 	    @ApiResponse(code = 201, message = "The book was created"),
 
 	})
-	@PostMapping("/book/{userId}")
-	public ResponseEntity<Object> insert(@RequestBody Book obj, @PathVariable UUID userId) {
-
-		service.insert(obj, userId);
+	@PostMapping("/book")
+	public ResponseEntity<Object> insert(@RequestBody Book obj) {
+		
+		service.insert(obj, userService.returnUserAuthenticated().getId());
 		return GenericResponse.handleResponse(HttpStatus.CREATED, "Livro publicado com sucesso", obj);
 
 	}

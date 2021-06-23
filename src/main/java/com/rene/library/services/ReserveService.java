@@ -26,12 +26,8 @@ public class ReserveService {
 	@Autowired
 	private BookRepository bookRepository;
 
-	public Book reserveBook(UUID userId, UUID bookId) {
+	public Book reserveBook(User user, Book book) {
 
-		Book book = bookService.findByUuid(bookId);
-		User user = userService.findByUuid(userId);
-		
-		
 		// minus 3 hours
 		Instant instantNow = Instant.now().minusSeconds(10800);
 
