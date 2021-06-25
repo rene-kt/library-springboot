@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rene.library.models.User;
+import com.rene.library.repositories.UserRepository;
 import com.rene.library.services.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +28,9 @@ public class UserResource {
 
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private UserRepository repo;
 
 	@ApiOperation(value = "Return a user by UUID")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Return the user of the given UUID"),
@@ -56,16 +60,16 @@ public class UserResource {
 	@PostMapping("/user")
 	public ResponseEntity<Object> insert(@RequestBody User obj) {
 
-		try {
-			service.insert(obj);
-
-			return GenericResponse.handleResponse(HttpStatus.CREATED, "Usuário criado com sucesso", obj);
-		} catch (Exception e) {
+		if (repo.findByUsername(obj.getUsername()) != null) {
 			return GenericResponse.handleResponse(HttpStatus.BAD_REQUEST,
 					"Já existe um usuário com esse mesmo username", null);
 
 			// TODO: handle exception
 		}
+
+		service.insert(obj);
+
+		return GenericResponse.handleResponse(HttpStatus.CREATED, "Usuário criado com sucesso", obj);
 
 	}
 
