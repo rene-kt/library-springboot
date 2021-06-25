@@ -35,10 +35,11 @@ public class ReserveService {
 		book.setReservedAt(instantNow);
 
 		// plus 24 hours
-		// book.setExpiration_date(Instant.now().plusSeconds(86400));
+		book.setExpiration_date(Instant.now().plusSeconds(86400));
 		
 		
-		book.setExpiration_date(instantNow.plusSeconds(60));
+		//book.setExpiration_date(instantNow.plusSeconds(60));
+		
 		book.setIsExpired("N");
 		book.setReservedBy(user);
 		book.getHasBeenReservedBy().add(user);
