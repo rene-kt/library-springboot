@@ -78,7 +78,7 @@ server.port=8000
 - Make sure to create a database called **library** 
   > or create it with another name. However, you must to rename its name in ```src/main/resources/application.properties```
 
- **By the way, you can change the port (3000) to another one, just change the line in ```src/main/resources/application.properties```**
+ **By the way, you can change the port (8000) to another one, just change the line in ```src/main/resources/application.properties```**
 
   **Now, you are able to run this Java application locally.** :heavy_check_mark:
 
