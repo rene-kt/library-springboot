@@ -24,8 +24,8 @@ public class VerifyExpirationDate {
 	@Autowired
 	private ReserveService reserveService;
 
-	// 24 hours in milliseconds
-	@Scheduled(fixedRate = 864000000)
+	// Two hours
+	@Scheduled(fixedRate = 60 * 60 * 2000)
 	public void scheduleIfIsItExpired() {
 
 		isExpired();
